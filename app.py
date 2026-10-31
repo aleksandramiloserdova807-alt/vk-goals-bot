@@ -4,7 +4,7 @@ import os
 
 app = Flask(__name__)
 
-VK_CONFIRMATION_CODE = "4fabf227"
+VK_CONFIRMATION_CODE = "4235afaf"
 VK_GROUP_ID = 180235186
 
 
