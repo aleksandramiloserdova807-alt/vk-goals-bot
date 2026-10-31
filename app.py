@@ -1,3 +1,4 @@
+
 from flask import Flask, jsonify, request
 import os
 
@@ -22,9 +23,6 @@ def health():
 
 @app.route("/vk-callback", methods=["POST"])
 def vk_callback():
-    
-@app.route("/vk-callback", methods=["POST"])
-def vk_callback():
     data = request.get_json(silent=True)
 
     if not data:
@@ -32,21 +30,19 @@ def vk_callback():
 
     event_type = data.get("type")
 
+    # Подтверждение сервера ВКонтакте
     if event_type == "confirmation":
-        group_id = str(data.get("group_id", ""))
-
-        if group_id != str(VK_GROUP_ID):
-            return "Invalid group", 403
-
         return app.response_class(
             response=VK_CONFIRMATION_CODE,
             status=200,
             mimetype="text/plain"
         )
 
+    # Проверка ID сообщества
     if str(data.get("group_id", "")) != str(VK_GROUP_ID):
         return "Invalid group", 403
 
+    # Остальные события пока принимаем
     return "ok", 200
 
 
