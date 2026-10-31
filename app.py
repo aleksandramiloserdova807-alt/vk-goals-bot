@@ -23,20 +23,30 @@ def health():
 
 @app.route("/vk-callback", methods=["POST"])
 def vk_callback():
+    
+@app.route("/vk-callback", methods=["POST"])
+def vk_callback():
     data = request.get_json(silent=True)
 
     if not data:
         return "Invalid request", 400
 
-    if data.get("group_id") != VK_GROUP_ID:
-        return "Invalid group", 403
-
     event_type = data.get("type")
 
     if event_type == "confirmation":
-        return VK_CONFIRMATION_CODE, 200, {
-            "Content-Type": "text/plain"
-        }
+        group_id = str(data.get("group_id", ""))
+
+        if group_id != str(VK_GROUP_ID):
+            return "Invalid group", 403
+
+        return app.response_class(
+            response=VK_CONFIRMATION_CODE,
+            status=200,
+            mimetype="text/plain"
+        )
+
+    if str(data.get("group_id", "")) != str(VK_GROUP_ID):
+        return "Invalid group", 403
 
     return "ok", 200
 
